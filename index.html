@@ -72,10 +72,11 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
 
 /* ── BOTTOM NAV ── */
 .bnav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--wh);border-top:1px solid var(--bd);box-shadow:0 -2px 12px rgba(42,24,16,.06);display:flex;align-items:center;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
-.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:6px 0;color:var(--t3);border:none;background:none;font-size:9.5px;font-weight:600;font-family:inherit;transition:all .2s;letter-spacing:.3px}
-.ni .ic{font-size:21px;transition:transform .2s}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:6px 0;color:var(--t3);border:none;background:none;font-size:9.5px;font-weight:600;font-family:inherit;transition:color .2s;letter-spacing:.3px}
+.ni .ic{width:22px;height:22px;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.ni .ic svg{width:100%;height:100%}
 .ni.active{color:var(--uk-d)}
-.ni.active .ic{transform:scale(1.1)}
+.ni.active .ic{transform:scale(1.12)}
 
 /* ── CARD ── */
 .card{background:var(--wh);border-radius:var(--r);box-shadow:var(--sh);padding:16px;margin-bottom:12px}
@@ -262,6 +263,12 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
 .pm-tag.cash{background:rgba(46,138,92,.12);color:var(--ok);border:1px solid rgba(46,138,92,.2)}
 .pm-tag.card{background:var(--sb-l);color:var(--sb);border:1px solid rgba(58,107,158,.2)}
 .pm-tag.tmoney{background:var(--tr-l);color:var(--tr);border:1px solid rgba(200,90,42,.2)}
+.si-row{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+.si-row .fi{margin-bottom:0}
+.si-del{background:none;border:none;color:var(--t3);font-size:17px;cursor:pointer;padding:0 2px;flex-shrink:0;line-height:1}
+.si-has{font-size:11px;color:var(--uk-d);margin-top:3px;font-weight:600}
+.det-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--bd);align-items:center}
+.det-row:last-child{border-bottom:none;font-weight:700}
 .cash-card{background:var(--wh);border-radius:var(--r);box-shadow:var(--sh);padding:14px 16px;margin-bottom:12px}
 .cc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .cc-ti{font-size:13px;font-weight:700;color:var(--nv)}
@@ -512,10 +519,17 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
     <!-- 新增支出表單 -->
     <div class="card">
       <div style="font-size:14px;font-weight:700;color:var(--nv);margin-bottom:12px">+ 新增支出</div>
-      <div class="ocr" onclick="document.getElementById('ri_h').click()">
-        <input type="file" id="ri_h" accept="image/*" capture="environment" style="display:none" onchange="prvR(this,'rPh','rOc','h')">
-        <div id="rOc"><div class="oc-ic">📷</div><div class="oc-tx">點擊拍照或上傳收據</div><div class="oc-sb">保留收據照片 · OCR 辨識整合中</div></div>
-        <img id="rPh" alt="收據" style="width:100%;max-height:150px;object-fit:cover;border-radius:10px;display:none;margin-top:8px">
+      <div style="margin-bottom:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--nv);margin-bottom:6px">📷 收據照片（可多張）</div>
+        <div id="hPhotoGrid" style="display:flex;flex-wrap:wrap;gap:6px;min-height:52px;align-items:flex-start;margin-bottom:8px">
+          <div style="font-size:12px;color:var(--t3);padding:10px 0;width:100%;text-align:center">尚未加入照片</div>
+        </div>
+        <input type="file" id="ri_h" accept="image/*" style="display:none" onchange="onHPhotoSelect(this)">
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-gh" style="flex:1;font-size:13px;padding:10px 0" onclick="document.getElementById('ri_h').click()">📷 新增照片</button>
+          <button class="btn btn-uk" style="flex:1;font-size:13px;padding:10px 0;display:none" id="hScanBtn" onclick="scanAllPhotos()">🔍 辨識收據</button>
+        </div>
+        <div style="font-size:11px;color:var(--t3);margin-top:6px;text-align:center">長收據可分段拍多張，一起辨識</div>
       </div>
       <div class="fg"><label class="fl">項目名稱</label><input class="fi" id="hN" placeholder="例：午餐、便利商店、水族館門票"></div>
       <div class="fc2">
@@ -531,6 +545,13 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
       <div class="fc2">
         <div class="fg"><label class="fl">日期</label><input class="fi" id="hD" type="date" value="2026-09-16"></div>
         <div class="fg"><label class="fl">備註</label><input class="fi" id="hNote" placeholder="選填"></div>
+      </div>
+      <div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <label class="fl" style="margin:0">🧾 購物明細（選填）</label>
+          <button onclick="addSubRow()" style="font-size:12px;padding:3px 11px;border-radius:8px;border:1px solid var(--bd);background:var(--wh);color:var(--nv);cursor:pointer;font-weight:700">＋ 新增</button>
+        </div>
+        <div id="subRows"></div>
       </div>
       <label class="fl" style="margin-bottom:7px">付款方式</label>
       <div class="pm-row">
@@ -772,12 +793,24 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
 
 <!-- BOTTOM NAV (深藍 Navy) -->
 <nav class="bnav">
-  <button class="ni active" data-s="home"><span class="ic">🏠</span>首頁</button>
-  <button class="ni" data-s="itin"><span class="ic">📅</span>行程</button>
-  <button class="ni" data-s="exp"><span class="ic">💰</span>帳務</button>
-  <button class="ni" data-s="check"><span class="ic">✅</span>清單</button>
-  <button class="ni" data-s="docs"><span class="ic">📁</span>文件</button>
-  <button class="ni" data-s="info"><span class="ic">ℹ️</span>資訊</button>
+  <button class="ni active" data-s="home">
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1z"/><path d="M9 21V12h6v9"/></svg></span>首頁
+  </button>
+  <button class="ni" data-s="itin">
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="17.5" x2="10" y2="17.5"/><line x1="14" y1="17.5" x2="16" y2="17.5"/></svg></span>行程
+  </button>
+  <button class="ni" data-s="exp">
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M2 11h20"/><path d="M6 7V5a2 2 0 012-2h8a2 2 0 012 2v2"/><circle cx="12" cy="16" r="1.5" fill="currentColor" stroke="none"/></svg></span>帳務
+  </button>
+  <button class="ni" data-s="check">
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12l3 3 5-5"/></svg></span>清單
+  </button>
+  <button class="ni" data-s="docs">
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg></span>文件
+  </button>
+  <button class="ni" data-s="info">
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="8" r=".8" fill="currentColor" stroke="none"/><line x1="12" y1="11" x2="12" y2="17"/></svg></span>資訊
+  </button>
 </nav>
 
 <!-- MODAL -->
@@ -807,6 +840,17 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
     <div class="m-act">
       <button class="btn btn-uk btn-f" onclick="saveGeminiKey()">儲存</button>
       <button class="btn btn-gh" onclick="closeSettings()" style="min-width:74px">關閉</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="heDetailModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal-in">
+    <div class="modal-ti" id="heDetailTitle"></div>
+    <div style="font-size:12px;color:var(--t2);margin-bottom:12px" id="heDetailMeta"></div>
+    <div id="heDetailBody"></div>
+    <div class="m-act" style="margin-top:14px">
+      <button class="btn btn-gh btn-f" onclick="document.getElementById('heDetailModal').classList.remove('open')">關閉</button>
     </div>
   </div>
 </div>
@@ -1181,6 +1225,88 @@ function renCashCard(){
     </div>`).join('')+'</div>';
 }
 
+// ═══ 多張收據照片 ═══════════════════════════
+let hPhotos=[];
+function onHPhotoSelect(input){
+  if(!input.files||!input.files[0])return;
+  const file=input.files[0];
+  const reader=new FileReader();
+  reader.onload=e=>{
+    hPhotos.push({dataUrl:e.target.result,mimeType:file.type||'image/jpeg'});
+    input.value='';
+    renderHPhotoGrid();
+  };
+  reader.readAsDataURL(file);
+}
+function renderHPhotoGrid(){
+  const grid=document.getElementById('hPhotoGrid');
+  const scanBtn=document.getElementById('hScanBtn');
+  if(!hPhotos.length){
+    grid.innerHTML='<div style="font-size:12px;color:var(--t3);padding:10px 0;width:100%;text-align:center">尚未加入照片</div>';
+    scanBtn.style.display='none';return;
+  }
+  grid.innerHTML=hPhotos.map((p,i)=>`
+    <div style="position:relative;flex-shrink:0">
+      <img src="${p.dataUrl}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;display:block;border:1.5px solid var(--bd)">
+      <div style="position:absolute;top:-5px;right:-5px;background:var(--nv);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:10px;color:#fff;font-weight:700" onclick="removeHPhoto(${i})">✕</div>
+      <div style="font-size:10px;color:var(--t3);text-align:center;margin-top:3px">第${i+1}張</div>
+    </div>`).join('');
+  scanBtn.style.display='block';
+}
+function removeHPhoto(i){
+  hPhotos.splice(i,1);
+  renderHPhotoGrid();
+}
+async function scanAllPhotos(){
+  if(!hPhotos.length)return;
+  const apiKey=localStorage.getItem('gemini_key');
+  if(!apiKey){alert('請先到右上角 ⚙️ 設定填入 Gemini API Key');return;}
+  const nameEl=document.getElementById('hN');
+  const origPh=nameEl?.placeholder||'';
+  if(nameEl)nameEl.placeholder='🔍 辨識中…';
+  const scanBtn=document.getElementById('hScanBtn');
+  if(scanBtn){scanBtn.disabled=true;scanBtn.textContent='辨識中…';}
+  try{
+    const modelName=localStorage.getItem('gemini_model')||'gemini-2.5-flash';
+    const url=`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+    const prompt=hPhotos.length>1
+      ?`這是同一張收據分成 ${hPhotos.length} 段拍攝的照片，請綜合所有照片提取完整資訊。只回傳 JSON 不含其他文字。格式：{"krw":總金額數字,"name":"店名或消費摘要（簡短中文）","date":"YYYY-MM-DD","cat":"類別","items":[{"name":"品項名稱","krw":單價}]}。cat 只能填：餐飲、交通、住宿、購物、景點、其他。items 為所有商品明細，無法辨識給[]。看不出金額填0，看不出日期填null。`
+      :`這是一張收據照片。只回傳 JSON 不含其他文字。格式：{"krw":總金額數字,"name":"店名或消費摘要（簡短中文）","date":"YYYY-MM-DD","cat":"類別","items":[{"name":"品項名稱","krw":單價}]}。cat 只能填：餐飲、交通、住宿、購物、景點、其他。items 為所有商品明細，無法辨識給[]。看不出金額填0，看不出日期填null。`;
+    const parts=[{text:prompt},...hPhotos.map(p=>({inline_data:{mime_type:p.mimeType,data:p.dataUrl.split(',')[1]}}))];
+    const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts}]})});
+    if(!res.ok){const errData=await res.json().catch(()=>({}));throw new Error(errData.error?.message||'HTTP '+res.status);}
+    const d=await res.json();
+    const text=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    const m=text.match(/\{[\s\S]*\}/);
+    if(!m)throw new Error('回應格式異常');
+    const parsed=JSON.parse(m[0]);
+    if(parsed.name&&nameEl)nameEl.value=parsed.name;
+    if(parsed.krw){const kEl=document.getElementById('hK');if(kEl)kEl.value=parsed.krw;}
+    if(parsed.date&&parsed.date!=='null'&&parsed.date!==null){const dEl=document.getElementById('hD');if(dEl)dEl.value=parsed.date;}
+    if(parsed.cat){const catMap={'餐飲':'0','交通':'1','住宿':'2','購物':'3','景點':'4','其他':'5'};const cEl=document.getElementById('hC');if(cEl&&catMap[parsed.cat]!==undefined)cEl.value=catMap[parsed.cat];}
+    if(parsed.items&&Array.isArray(parsed.items)){document.getElementById('subRows').innerHTML='';parsed.items.forEach(it=>addSubRow(it.name||'',it.krw||0));}
+    if(nameEl&&!nameEl.value)nameEl.placeholder=origPh;
+  }catch(err){
+    if(nameEl){nameEl.placeholder='❌ '+err.message;setTimeout(()=>{if(!nameEl.value)nameEl.placeholder=origPh;},4000);}
+  }finally{
+    if(scanBtn){scanBtn.disabled=false;scanBtn.textContent='🔍 辨識收據';}
+  }
+}
+
+function addSubRow(name='',krw=''){
+  const id='sr'+Date.now()+Math.random().toString(36).slice(2,6);
+  const row=document.createElement('div');
+  row.className='si-row';row.id=id;
+  row.innerHTML=`<input class="fi" style="flex:2;margin:0" placeholder="品項名稱" value="${name}"><input class="fi" style="flex:1;margin:0" type="number" inputmode="numeric" placeholder="₩" value="${krw}"><button class="si-del" onclick="document.getElementById('${id}').remove()">✕</button>`;
+  document.getElementById('subRows').appendChild(row);
+}
+function getSubRows(){
+  return [...document.querySelectorAll('#subRows .si-row')].map(r=>{
+    const ins=r.querySelectorAll('input');
+    const n=ins[0].value.trim();const k=parseInt(ins[1].value)||0;
+    return n?{name:n,krw:k}:null;
+  }).filter(Boolean);
+}
 function addHE(){
   const name=document.getElementById('hN').value.trim();
   const krw=parseInt(document.getElementById('hK').value)||0;
@@ -1188,13 +1314,29 @@ function addHE(){
   const cat=parseInt(document.getElementById('hC').value);
   const date=document.getElementById('hD').value;
   const note=document.getElementById('hNote').value.trim();
+  const items=getSubRows();
   const list=gHE();
-  list.unshift({id:Date.now(),name,krw,cat,date,note,pm:PM_KEYS[payMethod]});
+  list.unshift({id:Date.now(),name,krw,cat,date,note,pm:PM_KEYS[payMethod],items});
   sHE(list);
   document.getElementById('hN').value='';document.getElementById('hK').value='';document.getElementById('hNote').value='';
+  document.getElementById('subRows').innerHTML='';
+  hPhotos=[];renderHPhotoGrid();
   renHE();
 }
 function delHE(id){if(!confirm('刪除？'))return;sHE(gHE().filter(e=>e.id!==id));renHE();}
+function showHEDetail(id){
+  const e=gHE().find(x=>x.id===id);if(!e)return;
+  const pmL={'cash':'💵 現金','card':'💳 信用卡','tmoney':'🚌 T-money'};
+  document.getElementById('heDetailTitle').textContent=e.name;
+  document.getElementById('heDetailMeta').textContent=`${CE[e.cat]} ${CN[e.cat]} · ${e.date} · ${pmL[e.pm||'cash']}${e.note?' · '+e.note:''}`;
+  const items=e.items||[];
+  document.getElementById('heDetailBody').innerHTML=items.length
+    ?`<div style="font-size:13px;font-weight:700;color:var(--nv);margin-bottom:6px">購物明細</div>`+
+      items.map(it=>`<div class="det-row"><span style="font-size:13px;color:var(--txt)">${it.name}</span><span style="font-size:13px;font-weight:600;color:var(--nv)">₩${it.krw.toLocaleString()}</span></div>`).join('')+
+      `<div class="det-row" style="margin-top:4px"><span style="font-size:13px;color:var(--nv)">合計</span><span style="font-size:14px;font-weight:700;color:var(--uk-d)">₩${e.krw.toLocaleString()} <span style="font-size:11px;font-weight:400;color:var(--t2)">≈NT$${Math.round(e.krw/rate).toLocaleString()}</span></span></div>`
+    :`<div style="color:var(--t3);font-size:13px;text-align:center;padding:16px 0">無購物明細</div><div class="det-row" style="margin-top:4px"><span style="font-size:13px;color:var(--nv)">總金額</span><span style="font-size:14px;font-weight:700;color:var(--uk-d)">₩${e.krw.toLocaleString()} <span style="font-size:11px;font-weight:400;color:var(--t2)">≈NT$${Math.round(e.krw/rate).toLocaleString()}</span></span></div>`;
+  document.getElementById('heDetailModal').classList.add('open');
+}
 function renHE(){
   const list=gHE();
   const tot=list.reduce((s,e)=>s+e.krw,0);
@@ -1206,14 +1348,15 @@ function renHE(){
   if(!list.length){el.innerHTML='<div class="empty"><div class="e-ic">💸</div><div class="e-tx">尚未新增支出</div></div>';return;}
   const pmLabel={'cash':'💵 現金','card':'💳 信用卡','tmoney':'🚌 T-money'};
   el.innerHTML=list.map(e=>`
-    <div class="ei">
+    <div class="ei" onclick="showHEDetail(${e.id})" style="cursor:pointer">
       <div class="cd c${e.cat}" style="margin-top:5px"></div>
       <div class="ei-i">
         <div class="ei-n">${e.name}<span class="pm-tag ${e.pm||'cash'}">${pmLabel[e.pm||'cash']}</span></div>
         <div class="ei-m">${CE[e.cat]} ${CN[e.cat]} · ${e.date}${e.note?' · '+e.note:''}</div>
+        ${e.items?.length?`<div class="si-has">📋 ${e.items.length} 項明細</div>`:''}
       </div>
       <div class="ei-a"><div class="ei-k">₩${e.krw.toLocaleString()}</div><div class="ei-t">≈NT$${Math.round(e.krw/rate).toLocaleString()}</div></div>
-      <button class="del" onclick="delHE(${e.id})">✕</button>
+      <button class="del" onclick="event.stopPropagation();delHE(${e.id})">✕</button>
     </div>`).join('');
 }
 
@@ -1343,7 +1486,7 @@ async function scanAndFill(dataUrl,mimeType,prefix){
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({contents:[{parts:[
-        {text:'這是一張收據照片。請只回傳 JSON 不含其他文字。格式：{"krw":韓幣金額數字,"name":"消費項目名稱（簡短中文）","date":"YYYY-MM-DD"}。若看不出金額填0，看不出日期填null。'},
+        {text:'這是一張收據照片。請只回傳 JSON 不含其他文字。格式：{"krw":總金額數字,"name":"店名或消費摘要（簡短中文）","date":"YYYY-MM-DD","cat":"類別","items":[{"name":"品項名稱","krw":單價}]}。cat 只能填：餐飲、交通、住宿、購物、景點、其他（餐廳/咖啡→餐飲，地鐵/計程車→交通，飯店→住宿，化妝品/衣服/超市/便利商店→購物，門票/樂園→景點）。items 為收據中所有商品明細列表，若無法辨識則給空陣列[]。若看不出金額填0，看不出日期填null。'},
         {inline_data:{mime_type:mt,data:base64}}
       ]}]})
     });
@@ -1356,6 +1499,15 @@ async function scanAndFill(dataUrl,mimeType,prefix){
     if(parsed.name&&nameEl)nameEl.value=parsed.name;
     if(parsed.krw){const kEl=document.getElementById(prefix+'K');if(kEl)kEl.value=parsed.krw;}
     if(parsed.date&&parsed.date!=='null'&&parsed.date!==null){const dEl=document.getElementById(prefix+'D');if(dEl)dEl.value=parsed.date;}
+    if(parsed.cat){
+      const catMap={'餐飲':'0','交通':'1','住宿':'2','購物':'3','景點':'4','其他':'5'};
+      const cEl=document.getElementById(prefix+'C');
+      if(cEl&&catMap[parsed.cat]!==undefined)cEl.value=catMap[parsed.cat];
+    }
+    if(parsed.items&&Array.isArray(parsed.items)&&prefix==='h'){
+      document.getElementById('subRows').innerHTML='';
+      parsed.items.forEach(it=>addSubRow(it.name||'',it.krw||0));
+    }
     if(prefix==='e')updSplit();
     if(nameEl&&!nameEl.value)nameEl.placeholder=origPlaceholder;
   }catch(err){
