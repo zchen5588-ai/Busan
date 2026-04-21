@@ -1270,8 +1270,8 @@ async function scanAllPhotos(){
     const modelName=localStorage.getItem('gemini_model')||'gemini-2.5-flash';
     const url=`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
     const prompt=hPhotos.length>1
-      ?`這是同一張收據分成 ${hPhotos.length} 段拍攝的照片，請綜合所有照片提取完整資訊。只回傳 JSON 不含其他文字。格式：{"krw":總金額數字,"name":"店名或消費摘要（簡短中文）","date":"YYYY-MM-DD","cat":"類別","items":[{"name":"品項名稱","krw":單價}]}。cat 只能填：餐飲、交通、住宿、購物、景點、其他。items 為所有商品明細，無法辨識給[]。看不出金額填0，看不出日期填null。`
-      :`這是一張收據照片。只回傳 JSON 不含其他文字。格式：{"krw":總金額數字,"name":"店名或消費摘要（簡短中文）","date":"YYYY-MM-DD","cat":"類別","items":[{"name":"品項名稱","krw":單價}]}。cat 只能填：餐飲、交通、住宿、購物、景點、其他。items 為所有商品明細，無法辨識給[]。看不出金額填0，看不出日期填null。`;
+      ?`這是同一張收據分成 ${hPhotos.length} 段拍攝的照片，請綜合所有照片提取完整資訊。只回傳 JSON 不含其他文字。所有文字欄位（name、items 的 name）必須翻譯成繁體中文，不可保留韓文或英文原文。格式：{"krw":總金額數字,"name":"店名或消費摘要（簡短繁體中文）","date":"YYYY-MM-DD","cat":"類別","items":[{"name":"品項繁體中文名稱","krw":單價}]}。cat 只能填：餐飲、交通、住宿、購物、景點、其他。items 為所有商品明細，無法辨識給[]。看不出金額填0，看不出日期填null。`
+      :`這是一張收據照片。只回傳 JSON 不含其他文字。所有文字欄位（name、items 的 name）必須翻譯成繁體中文，不可保留韓文或英文原文。格式：{"krw":總金額數字,"name":"店名或消費摘要（簡短繁體中文）","date":"YYYY-MM-DD","cat":"類別","items":[{"name":"品項繁體中文名稱","krw":單價}]}。cat 只能填：餐飲、交通、住宿、購物、景點、其他。items 為所有商品明細，無法辨識給[]。看不出金額填0，看不出日期填null。`;
     const parts=[{text:prompt},...hPhotos.map(p=>({inline_data:{mime_type:p.mimeType,data:p.dataUrl.split(',')[1]}}))];
     const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts}]})});
     if(!res.ok){const errData=await res.json().catch(()=>({}));throw new Error(errData.error?.message||'HTTP '+res.status);}
@@ -1486,7 +1486,7 @@ async function scanAndFill(dataUrl,mimeType,prefix){
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({contents:[{parts:[
-        {text:'這是一張收據照片。請只回傳 JSON 不含其他文字。格式：{"krw":總金額數字,"name":"店名或消費摘要（簡短中文）","date":"YYYY-MM-DD","cat":"類別","items":[{"name":"品項名稱","krw":單價}]}。cat 只能填：餐飲、交通、住宿、購物、景點、其他（餐廳/咖啡→餐飲，地鐵/計程車→交通，飯店→住宿，化妝品/衣服/超市/便利商店→購物，門票/樂園→景點）。items 為收據中所有商品明細列表，若無法辨識則給空陣列[]。若看不出金額填0，看不出日期填null。'},
+        {text:'這是一張收據照片。請只回傳 JSON 不含其他文字。所有文字欄位（name、items 的 name）必須翻譯成繁體中文，不可保留韓文或英文原文。格式：{"krw":總金額數字,"name":"店名或消費摘要（簡短繁體中文）","date":"YYYY-MM-DD","cat":"類別","items":[{"name":"品項繁體中文名稱","krw":單價}]}。cat 只能填：餐飲、交通、住宿、購物、景點、其他（餐廳/咖啡→餐飲，地鐵/計程車→交通，飯店→住宿，化妝品/衣服/超市/便利商店→購物，門票/樂園→景點）。items 為收據中所有商品明細，無法辨識給[]。看不出金額填0，看不出日期填null。'},
         {inline_data:{mime_type:mt,data:base64}}
       ]}]})
     });
