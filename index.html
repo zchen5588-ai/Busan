@@ -1321,33 +1321,37 @@ function prvR(input,prevId,phId,prefix){
 // ═══ GEMINI OCR ═══════════════════════════
 async function scanAndFill(dataUrl,mimeType,prefix){
   const apiKey=localStorage.getItem('gemini_key');
-  if(!apiKey)return;
+  if(!apiKey){alert('請先到右上角 ⚙️ 設定填入 Gemini API Key');return;}
   const statusId=prefix+'N';
   const nameEl=document.getElementById(statusId);
   const origPlaceholder=nameEl?.placeholder||'';
   if(nameEl)nameEl.placeholder='🔍 辨識中…';
   try{
     const base64=dataUrl.split(',')[1];
-    const url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+    const mt=mimeType||'image/jpeg';
+    const url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
     const res=await fetch(url,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({contents:[{parts:[
-        {text:'這是一張收據照片，請提取資訊，只回傳 JSON，不要其他文字。格式：{"krw":韓幣金額數字,"name":"消費項目中文名稱（簡短）","date":"YYYY-MM-DD或null"}。看不出金額給0，看不出日期給null。'},
-        {inline_data:{mime_type:mimeType,data:base64}}
+        {text:'這是一張收據照片。請只回傳 JSON 不含其他文字。格式：{"krw":韓幣金額數字,"name":"消費項目名稱（簡短中文）","date":"YYYY-MM-DD"}。若看不出金額填0，看不出日期填null。'},
+        {inline_data:{mime_type:mt,data:base64}}
       ]}]})
     });
+    if(!res.ok){const errData=await res.json().catch(()=>({}));throw new Error(errData.error?.message||'HTTP '+res.status);}
     const d=await res.json();
     const text=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    const m=text.match(/\{[\s\S]*?\}/);
-    if(!m)return;
+    const m=text.match(/\{[\s\S]*\}/);
+    if(!m)throw new Error('回應格式異常');
     const parsed=JSON.parse(m[0]);
     if(parsed.name&&nameEl)nameEl.value=parsed.name;
     if(parsed.krw){const kEl=document.getElementById(prefix+'K');if(kEl)kEl.value=parsed.krw;}
-    if(parsed.date&&parsed.date!=='null'){const dEl=document.getElementById(prefix+'D');if(dEl)dEl.value=parsed.date;}
+    if(parsed.date&&parsed.date!=='null'&&parsed.date!==null){const dEl=document.getElementById(prefix+'D');if(dEl)dEl.value=parsed.date;}
     if(prefix==='e')updSplit();
-  }catch(err){}
-  finally{if(nameEl&&!nameEl.value)nameEl.placeholder=origPlaceholder;}
+    if(nameEl&&!nameEl.value)nameEl.placeholder=origPlaceholder;
+  }catch(err){
+    if(nameEl){nameEl.placeholder='❌ '+err.message;setTimeout(()=>{if(!nameEl.value)nameEl.placeholder=origPlaceholder;},4000);}
+  }
 }
 
 // ═══ SETTINGS ═════════════════════════════
