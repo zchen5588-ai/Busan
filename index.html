@@ -796,6 +796,14 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
         Key 只儲存在您的裝置，不會上傳或外流
       </div>
     </div>
+    <div class="fg" style="margin-top:12px">
+      <label class="fl">Gemini 模型名稱</label>
+      <input class="fi" id="geminiModelInput" type="text" placeholder="gemini-2.5-flash">
+      <div style="font-size:11px;color:var(--t3);margin-top:6px;line-height:1.8">
+        可至 aistudio.google.com 查看可用模型<br>
+        常見：gemini-2.5-flash、gemini-2.5-pro、gemini-2.0-flash
+      </div>
+    </div>
     <div class="m-act">
       <button class="btn btn-uk btn-f" onclick="saveGeminiKey()">儲存</button>
       <button class="btn btn-gh" onclick="closeSettings()" style="min-width:74px">關閉</button>
@@ -1329,7 +1337,8 @@ async function scanAndFill(dataUrl,mimeType,prefix){
   try{
     const base64=dataUrl.split(',')[1];
     const mt=mimeType||'image/jpeg';
-    const url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`;
+    const modelName=localStorage.getItem('gemini_model')||'gemini-2.5-flash';
+    const url=`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
     const res=await fetch(url,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -1357,6 +1366,7 @@ async function scanAndFill(dataUrl,mimeType,prefix){
 // ═══ SETTINGS ═════════════════════════════
 function openSettings(){
   document.getElementById('geminiKeyInput').value=localStorage.getItem('gemini_key')||'';
+  document.getElementById('geminiModelInput').value=localStorage.getItem('gemini_model')||'';
   document.getElementById('settingsModal').classList.add('open');
 }
 function closeSettings(e){
@@ -1367,6 +1377,9 @@ function saveGeminiKey(){
   const key=document.getElementById('geminiKeyInput').value.trim();
   if(key)localStorage.setItem('gemini_key',key);
   else localStorage.removeItem('gemini_key');
+  const model=document.getElementById('geminiModelInput').value.trim();
+  if(model)localStorage.setItem('gemini_model',model);
+  else localStorage.removeItem('gemini_model');
   document.getElementById('settingsModal').classList.remove('open');
 }
 function togKeyVis(){
