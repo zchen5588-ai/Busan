@@ -119,11 +119,19 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
 .btfl-dt{font-size:10px;color:var(--t3)}
 .btfl-lk{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--uk-d);font-weight:700;text-decoration:none;margin-top:9px;border:1px solid var(--uk-b);border-radius:7px;padding:4px 9px;background:var(--uk-l)}
 
-/* Feature nav tiles – 2 cols each, unified PackPoint style */
-.bt-feat{grid-column:span 2;border:1.5px solid var(--bd);cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;padding:18px 10px 15px;gap:10px;text-align:center;background:var(--wh);box-shadow:0 2px 8px rgba(28,43,74,.05);transition:transform .15s,background .15s}
-.bt-feat:active{transform:scale(.93);background:var(--uk-l);border-color:var(--uk-b)}
-.btft-ic-bg{width:46px;height:46px;border-radius:14px;background:var(--nv-l);border:1.5px solid var(--nv-b);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.btft-nm{font-size:11.5px;font-weight:700;color:var(--nv);line-height:1.3}
+/* Today itinerary tile */
+.bt-today{grid-column:span 6;background:var(--wh);border:1.5px solid var(--bd);box-shadow:var(--sh);padding:16px 18px}
+.td-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.td-title{font-size:13px;font-weight:700;color:var(--nv)}
+.td-sub{font-size:10px;color:var(--t3);font-weight:600;letter-spacing:.5px}
+.td-lnk{font-size:11px;color:var(--uk-d);font-weight:700;cursor:pointer;background:none;border:none;font-family:inherit;padding:0}
+.td-act{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--bd)}
+.td-act:last-child{border-bottom:none}
+.td-t{font-size:11px;color:var(--t3);font-weight:600;min-width:38px;font-family:'Inter',sans-serif;padding-top:1px}
+.td-n{font-size:12.5px;color:var(--txt);font-weight:600;line-height:1.35}
+.td-empty{font-size:13px;color:var(--t3);text-align:center;padding:16px 0}
+/* Outfit suggestion in weather widget */
+.ww-outfit{font-size:11px;color:var(--nv);background:rgba(239,187,36,.12);border-radius:8px;padding:5px 9px;margin-top:8px;line-height:1.6;border:1px solid rgba(239,187,36,.25)}
 
 /* ═══ ITINERARY ═══════════════════════════════ */
 /* Day tab selector */
@@ -365,11 +373,13 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
 .wc-dt{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .wd-v{font-size:15px;font-weight:700;color:#1A4A8A;font-family:'Inter',sans-serif}
 .wd-l{font-size:10px;color:rgba(42,24,16,.45);margin-top:3px}
-.wc-fc{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
-.wf{background:rgba(255,255,255,.6);border:1px solid rgba(58,107,158,.12);border-radius:10px;padding:10px;text-align:center}
-.wf-d{font-size:10px;color:rgba(42,24,16,.5)}
-.wf-e{font-size:24px;margin:4px 0}
-.wf-r{font-size:12px;font-weight:600;color:#1A4A8A;font-family:'Inter',sans-serif}
+.wc-fc{display:flex;gap:8px;margin-top:14px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.wc-fc::-webkit-scrollbar{display:none}
+.wf{background:rgba(255,255,255,.6);border:1px solid rgba(58,107,158,.12);border-radius:10px;padding:10px 8px;text-align:center;flex-shrink:0;min-width:58px}
+.wf-d{font-size:10px;color:rgba(42,24,16,.5);font-weight:600}
+.wf-e{font-size:22px;margin:4px 0}
+.wf-r{font-size:11px;font-weight:600;color:#1A4A8A;font-family:'Inter',sans-serif}
+.wf-rn{font-size:9px;color:#3a6b9e;margin-top:2px}
 
 .tlk{display:flex;align-items:center;padding:13px;background:var(--wh);border:1px solid var(--bd);border-radius:12px;margin-bottom:9px;gap:12px;text-decoration:none;color:var(--txt);box-shadow:var(--sh)}
 .tlk-ic{font-size:26px}.tlk-nm{font-size:13px;font-weight:600;color:var(--nv)}.tlk-sb{font-size:11px;color:var(--t3);margin-top:2px}.tlk-ar{margin-left:auto;color:var(--t3);font-size:18px}
@@ -464,35 +474,27 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
       <div class="btfl-rt"><span class="btfl-co">TPE</span><span class="btfl-ic">✈</span><span class="btfl-co">PUS</span></div>
       <div class="btfl-tm">08:15 → 11:30</div>
       <div class="btfl-dt">JX900 · 09/16（三）</div>
-      <a class="btfl-lk" href="https://www.flightradar24.com/JX900" target="_blank">即時狀態 ↗</a>
+      <a class="btfl-lk" href="https://www.starlux-airlines.com/zh-TW/flight-status" target="_blank">即時狀態 ↗</a>
     </div>
     <div class="bt bt-fl">
       <div class="btfl-tag">回程 RETURN</div>
       <div class="btfl-rt"><span class="btfl-co">PUS</span><span class="btfl-ic">✈</span><span class="btfl-co">TPE</span></div>
       <div class="btfl-tm">12:30 → 13:45</div>
       <div class="btfl-dt">JX901 · 09/21（一）</div>
-      <a class="btfl-lk" href="https://www.flightradar24.com/JX901" target="_blank">即時狀態 ↗</a>
+      <a class="btfl-lk" href="https://www.starlux-airlines.com/zh-TW/flight-status" target="_blank">即時狀態 ↗</a>
     </div>
 
-    <!-- FEATURE NAV TILES -->
-    <button class="bt bt-feat" onclick="goSec('itin')">
-      <div class="btft-ic-bg">📅</div><div class="btft-nm">每日行程</div>
-    </button>
-    <button class="bt bt-feat" onclick="goSec('exp')">
-      <div class="btft-ic-bg">💰</div><div class="btft-nm">智慧記帳</div>
-    </button>
-    <button class="bt bt-feat" onclick="goSec('cur')">
-      <div class="btft-ic-bg">💱</div><div class="btft-nm">匯率試算</div>
-    </button>
-    <button class="bt bt-feat" onclick="goSec('check')">
-      <div class="btft-ic-bg">✅</div><div class="btft-nm">行李清單</div>
-    </button>
-    <button class="bt bt-feat" onclick="goSec('docs')">
-      <div class="btft-ic-bg">📁</div><div class="btft-nm">文件中心</div>
-    </button>
-    <button class="bt bt-feat" onclick="goSec('info')">
-      <div class="btft-ic-bg">ℹ️</div><div class="btft-nm">旅遊資訊</div>
-    </button>
+    <!-- TODAY ITINERARY CARD -->
+    <div class="bt bt-today">
+      <div class="td-hd">
+        <div>
+          <div class="td-title" id="tdTitle">今日行程</div>
+          <div class="td-sub" id="tdSub"></div>
+        </div>
+        <button class="td-lnk" onclick="goSec('itin')">完整行程 →</button>
+      </div>
+      <div id="tdList"><div class="td-empty">載入中…</div></div>
+    </div>
 
   </div>
 </section>
@@ -713,35 +715,35 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
   </div>
 
   <div class="ipane active" id="ip0">
-    <div class="fl-card">
-      <div class="fl-bg">去程 OUTBOUND</div><div class="fl-al">⭐ 星宇航空 StarLux Airlines</div>
-      <div class="fl-rt">
-        <div class="fl-ap"><div class="fl-co">TPE</div><div class="fl-cy">桃園</div></div>
-        <div class="fl-md"><div class="fl-ln"></div><div class="fl-ic">✈</div><div class="fl-ln"></div></div>
-        <div class="fl-ap"><div class="fl-co">PUS</div><div class="fl-cy">金海</div></div>
+    <div class="card">
+      <div style="font-size:12px;font-weight:700;color:var(--t2);margin-bottom:14px;letter-spacing:.5px">⭐ 星宇航空 StarLux Airlines</div>
+      <!-- 去程 -->
+      <div style="margin-bottom:14px">
+        <div style="font-size:10px;font-weight:700;color:var(--uk-d);letter-spacing:1px;margin-bottom:8px">去程 OUTBOUND</div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="text-align:center"><div style="font-size:22px;font-weight:800;color:var(--nv);letter-spacing:1px">TPE</div><div style="font-size:10px;color:var(--t2)">桃園</div></div>
+          <div style="flex:1;text-align:center">
+            <div style="color:var(--t3);font-size:12px;margin-bottom:2px">──✈──</div>
+            <div style="font-size:11px;color:var(--t2)">JX900 · 09/16（三）· 08:15→11:30</div>
+          </div>
+          <div style="text-align:center"><div style="font-size:22px;font-weight:800;color:var(--nv);letter-spacing:1px">PUS</div><div style="font-size:10px;color:var(--t2)">金海</div></div>
+        </div>
       </div>
-      <div class="fl-rw">
-        <div class="fl-r"><span class="fr-l">航班號</span><span class="fr-v">JX 900</span></div>
-        <div class="fl-r"><span class="fr-l">出發</span><span class="fr-v">09/16（三）08:15</span></div>
-        <div class="fl-r"><span class="fr-l">抵達</span><span class="fr-v">09/16（三）11:30</span></div>
-        <div class="fl-r"><span class="fr-l">飛行時間</span><span class="fr-v">約 2h 15m</span></div>
+      <!-- 分隔線 -->
+      <div style="border-top:1px dashed var(--bd);margin-bottom:14px"></div>
+      <!-- 回程 -->
+      <div style="margin-bottom:16px">
+        <div style="font-size:10px;font-weight:700;color:var(--uk-d);letter-spacing:1px;margin-bottom:8px">回程 RETURN</div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="text-align:center"><div style="font-size:22px;font-weight:800;color:var(--nv);letter-spacing:1px">PUS</div><div style="font-size:10px;color:var(--t2)">金海</div></div>
+          <div style="flex:1;text-align:center">
+            <div style="color:var(--t3);font-size:12px;margin-bottom:2px">──✈──</div>
+            <div style="font-size:11px;color:var(--t2)">JX901 · 09/21（一）· 12:30→13:45</div>
+          </div>
+          <div style="text-align:center"><div style="font-size:22px;font-weight:800;color:var(--nv);letter-spacing:1px">TPE</div><div style="font-size:10px;color:var(--t2)">桃園</div></div>
+        </div>
       </div>
-      <a class="fa-btn" href="https://www.flightradar24.com/JX900" target="_blank">🔍 查詢即時狀態</a>
-    </div>
-    <div class="fl-card">
-      <div class="fl-bg">回程 RETURN</div><div class="fl-al">⭐ 星宇航空 StarLux Airlines</div>
-      <div class="fl-rt">
-        <div class="fl-ap"><div class="fl-co">PUS</div><div class="fl-cy">金海</div></div>
-        <div class="fl-md"><div class="fl-ln"></div><div class="fl-ic">✈</div><div class="fl-ln"></div></div>
-        <div class="fl-ap"><div class="fl-co">TPE</div><div class="fl-cy">桃園</div></div>
-      </div>
-      <div class="fl-rw">
-        <div class="fl-r"><span class="fr-l">航班號</span><span class="fr-v">JX 901</span></div>
-        <div class="fl-r"><span class="fr-l">出發</span><span class="fr-v">09/21（一）12:30</span></div>
-        <div class="fl-r"><span class="fr-l">抵達</span><span class="fr-v">09/21（一）13:45</span></div>
-        <div class="fl-r"><span class="fr-l">飛行時間</span><span class="fr-v">約 1h 15m</span></div>
-      </div>
-      <a class="fa-btn" href="https://www.flightradar24.com/JX901" target="_blank">🔍 查詢即時狀態</a>
+      <a class="btn btn-uk btn-f" style="text-decoration:none;text-align:center;display:block" href="https://www.starlux-airlines.com/zh-TW/flight-status" target="_blank">查看星宇班機動態 ↗</a>
     </div>
     <div class="card">
       <div style="font-size:13.5px;font-weight:700;color:var(--nv);margin-bottom:12px">🏨 住宿資訊</div>
@@ -1269,9 +1271,11 @@ async function scanAllPhotos(){
   try{
     const modelName=localStorage.getItem('gemini_model')||'gemini-2.5-flash';
     const url=`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+    const itemFmt='{"name":"收據上的品項名稱翻譯成繁體中文","qty":數量,"unitPrice":單品定價,"krw":該項小計}';
+    const commonRule='所有文字欄位翻譯成繁體中文，忠實還原收據內容。格式：{"krw":實際付款總金額（扣除退稅後結帳金額）,"name":"店名（簡短繁體中文）","date":"YYYY-MM-DD","cat":"類別","items":['+itemFmt+']}。cat只能填：餐飲、交通、住宿、購物、景點、其他。items為收據上每行商品，qty為數量，unitPrice為單品定價，krw=qty×unitPrice；無法辨識給[]。看不出金額填0，看不出日期填null。只回傳JSON不含其他文字。';
     const prompt=hPhotos.length>1
-      ?`這是同一張收據分成 ${hPhotos.length} 段拍攝的照片，請綜合所有照片提取完整資訊。只回傳 JSON 不含其他文字。所有文字欄位（name、items 的 name）必須翻譯成繁體中文，不可保留韓文或英文原文。格式：{"krw":總金額數字,"name":"店名或消費摘要（簡短繁體中文）","date":"YYYY-MM-DD","cat":"類別","items":[{"name":"品項繁體中文名稱","krw":單價}]}。cat 只能填：餐飲、交通、住宿、購物、景點、其他。items 為所有商品明細，無法辨識給[]。看不出金額填0，看不出日期填null。`
-      :`這是一張收據照片。只回傳 JSON 不含其他文字。所有文字欄位（name、items 的 name）必須翻譯成繁體中文，不可保留韓文或英文原文。格式：{"krw":總金額數字,"name":"店名或消費摘要（簡短繁體中文）","date":"YYYY-MM-DD","cat":"類別","items":[{"name":"品項繁體中文名稱","krw":單價}]}。cat 只能填：餐飲、交通、住宿、購物、景點、其他。items 為所有商品明細，無法辨識給[]。看不出金額填0，看不出日期填null。`;
+      ?`這是同一張收據分成 ${hPhotos.length} 段拍攝的照片，請綜合所有照片提取完整資訊。`+commonRule
+      :`這是一張收據照片。`+commonRule;
     const parts=[{text:prompt},...hPhotos.map(p=>({inline_data:{mime_type:p.mimeType,data:p.dataUrl.split(',')[1]}}))];
     const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts}]})});
     if(!res.ok){const errData=await res.json().catch(()=>({}));throw new Error(errData.error?.message||'HTTP '+res.status);}
@@ -1284,7 +1288,7 @@ async function scanAllPhotos(){
     if(parsed.krw){const kEl=document.getElementById('hK');if(kEl)kEl.value=parsed.krw;}
     if(parsed.date&&parsed.date!=='null'&&parsed.date!==null){const dEl=document.getElementById('hD');if(dEl)dEl.value=parsed.date;}
     if(parsed.cat){const catMap={'餐飲':'0','交通':'1','住宿':'2','購物':'3','景點':'4','其他':'5'};const cEl=document.getElementById('hC');if(cEl&&catMap[parsed.cat]!==undefined)cEl.value=catMap[parsed.cat];}
-    if(parsed.items&&Array.isArray(parsed.items)){document.getElementById('subRows').innerHTML='';parsed.items.forEach(it=>addSubRow(it.name||'',it.krw||0));}
+    if(parsed.items&&Array.isArray(parsed.items)){document.getElementById('subRows').innerHTML='';parsed.items.forEach(it=>addSubRow(it.name||'',it.qty||1,it.unitPrice||it.krw||0,it.krw||0));}
     if(nameEl&&!nameEl.value)nameEl.placeholder=origPh;
   }catch(err){
     if(nameEl){nameEl.placeholder='❌ '+err.message;setTimeout(()=>{if(!nameEl.value)nameEl.placeholder=origPh;},4000);}
@@ -1293,18 +1297,21 @@ async function scanAllPhotos(){
   }
 }
 
-function addSubRow(name='',krw=''){
+function addSubRow(name='',qty=1,unitPrice='',krw=''){
   const id='sr'+Date.now()+Math.random().toString(36).slice(2,6);
   const row=document.createElement('div');
   row.className='si-row';row.id=id;
-  row.innerHTML=`<input class="fi" style="flex:2;margin:0" placeholder="品項名稱" value="${name}"><input class="fi" style="flex:1;margin:0" type="number" inputmode="numeric" placeholder="₩" value="${krw}"><button class="si-del" onclick="document.getElementById('${id}').remove()">✕</button>`;
+  const up=unitPrice||krw||'';
+  row.innerHTML=`<input class="fi" style="flex:3;margin:0" placeholder="品項名稱" value="${name}"><input class="fi" style="flex:1;margin:0;text-align:center" type="number" inputmode="numeric" placeholder="數量" value="${qty||1}" min="1"><input class="fi" style="flex:2;margin:0" type="number" inputmode="numeric" placeholder="單價₩" value="${up}"><button class="si-del" onclick="document.getElementById('${id}').remove()">✕</button>`;
   document.getElementById('subRows').appendChild(row);
 }
 function getSubRows(){
   return [...document.querySelectorAll('#subRows .si-row')].map(r=>{
     const ins=r.querySelectorAll('input');
-    const n=ins[0].value.trim();const k=parseInt(ins[1].value)||0;
-    return n?{name:n,krw:k}:null;
+    const n=ins[0].value.trim();
+    const qty=parseInt(ins[1].value)||1;
+    const unitPrice=parseInt(ins[2].value)||0;
+    return n?{name:n,qty,unitPrice,krw:qty*unitPrice}:null;
   }).filter(Boolean);
 }
 function addHE(){
@@ -1332,7 +1339,14 @@ function showHEDetail(id){
   const items=e.items||[];
   document.getElementById('heDetailBody').innerHTML=items.length
     ?`<div style="font-size:13px;font-weight:700;color:var(--nv);margin-bottom:6px">購物明細</div>`+
-      items.map(it=>`<div class="det-row"><span style="font-size:13px;color:var(--txt)">${it.name}</span><span style="font-size:13px;font-weight:600;color:var(--nv)">₩${it.krw.toLocaleString()}</span></div>`).join('')+
+      items.map(it=>{
+        const qty=it.qty||1;const up=it.unitPrice||it.krw||0;const sub=it.krw||(qty*up);
+        return `<div class="det-row">
+          <div><div style="font-size:13px;color:var(--txt)">${it.name}</div>${qty>1||up?`<div style="font-size:11px;color:var(--t2);margin-top:2px">₩${up.toLocaleString()} × ${qty}</div>`:''}
+          </div>
+          <span style="font-size:13px;font-weight:600;color:var(--nv);white-space:nowrap">₩${sub.toLocaleString()}</span>
+        </div>`;
+      }).join('')+
       `<div class="det-row" style="margin-top:4px"><span style="font-size:13px;color:var(--nv)">合計</span><span style="font-size:14px;font-weight:700;color:var(--uk-d)">₩${e.krw.toLocaleString()} <span style="font-size:11px;font-weight:400;color:var(--t2)">≈NT$${Math.round(e.krw/rate).toLocaleString()}</span></span></div>`
     :`<div style="color:var(--t3);font-size:13px;text-align:center;padding:16px 0">無購物明細</div><div class="det-row" style="margin-top:4px"><span style="font-size:13px;color:var(--nv)">總金額</span><span style="font-size:14px;font-weight:700;color:var(--uk-d)">₩${e.krw.toLocaleString()} <span style="font-size:11px;font-weight:400;color:var(--t2)">≈NT$${Math.round(e.krw/rate).toLocaleString()}</span></span></div>`;
   document.getElementById('heDetailModal').classList.add('open');
@@ -1486,7 +1500,7 @@ async function scanAndFill(dataUrl,mimeType,prefix){
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({contents:[{parts:[
-        {text:'這是一張收據照片。請只回傳 JSON 不含其他文字。所有文字欄位（name、items 的 name）必須翻譯成繁體中文，不可保留韓文或英文原文。格式：{"krw":總金額數字,"name":"店名或消費摘要（簡短繁體中文）","date":"YYYY-MM-DD","cat":"類別","items":[{"name":"品項繁體中文名稱","krw":單價}]}。cat 只能填：餐飲、交通、住宿、購物、景點、其他（餐廳/咖啡→餐飲，地鐵/計程車→交通，飯店→住宿，化妝品/衣服/超市/便利商店→購物，門票/樂園→景點）。items 為收據中所有商品明細，無法辨識給[]。看不出金額填0，看不出日期填null。'},
+        {text:'這是一張收據照片。所有文字欄位忠實還原並翻譯成繁體中文。格式：{"krw":實際付款總金額（扣除退稅後結帳金額）,"name":"店名（簡短繁體中文）","date":"YYYY-MM-DD","cat":"類別","items":[{"name":"收據上的品項名稱繁體中文","qty":數量,"unitPrice":單品定價,"krw":小計}]}。cat只能填：餐飲、交通、住宿、購物、景點、其他（餐廳/咖啡→餐飲，地鐵/計程車→交通，飯店→住宿，化妝品/衣服/超市/便利商店→購物，門票/樂園→景點）。items為收據每行商品，qty為數量，unitPrice為單品定價，krw=qty×unitPrice；無法辨識給[]。看不出金額填0，看不出日期填null。只回傳JSON不含其他文字。'},
         {inline_data:{mime_type:mt,data:base64}}
       ]}]})
     });
@@ -1506,7 +1520,7 @@ async function scanAndFill(dataUrl,mimeType,prefix){
     }
     if(parsed.items&&Array.isArray(parsed.items)&&prefix==='h'){
       document.getElementById('subRows').innerHTML='';
-      parsed.items.forEach(it=>addSubRow(it.name||'',it.krw||0));
+      parsed.items.forEach(it=>addSubRow(it.name||'',it.qty||1,it.unitPrice||it.krw||0,it.krw||0));
     }
     if(prefix==='e')updSplit();
     if(nameEl&&!nameEl.value)nameEl.placeholder=origPlaceholder;
@@ -1670,18 +1684,45 @@ function swIT(i){
 }
 
 // ═══ WEATHER ══════════════════════════════
+function wmoEmoji(c){
+  if(c===0)return'☀️';if(c<=2)return'🌤️';if(c<=3)return'☁️';
+  if(c<=48)return'🌫️';if(c<=55)return'🌦️';if(c<=65)return'🌧️';
+  if(c<=77)return'🌨️';if(c<=82)return'🌦️';if(c<=86)return'❄️';return'⛈️';
+}
+function wmoDesc(c){
+  if(c===0)return'晴天';if(c<=2)return'多雲時晴';if(c<=3)return'多雲';
+  if(c<=48)return'有霧';if(c<=55)return'毛毛雨';if(c<=65)return'下雨';
+  if(c<=77)return'降雪';if(c<=82)return'陣雨';if(c<=86)return'降雪';return'雷暴';
+}
 async function fetchW(mode='widget'){
   try{
-    const r=await fetch('https://wttr.in/Busan?format=j1');
-    const d=await r.json();const cur=d.current_condition[0];
-    const t=cur.temp_C,fl=cur.FeelsLikeC,hm=cur.humidity,wk=cur.windspeedKmph;
-    const desc=cur.lang_zh?cur.lang_zh[0].value:cur.weatherDesc[0].value;
-    const em=WM[parseInt(cur.weatherCode)]||'🌡️';
-    document.getElementById('wW').innerHTML=`<div style="font-size:30px;font-weight:300;color:var(--nv);line-height:1;font-family:'Inter',sans-serif">${t}° ${em}</div><div style="font-size:11px;color:var(--t2);margin-top:7px">${desc} · 濕度 ${hm}%</div>`;
+    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.1796&longitude=129.0756&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FSeoul&forecast_days=7');
+    const d=await r.json();
+    const cur=d.current;
+    const t=Math.round(cur.temperature_2m);
+    const fl=Math.round(cur.apparent_temperature);
+    const hm=cur.relative_humidity_2m;
+    const wk=Math.round(cur.wind_speed_10m);
+    const em=wmoEmoji(cur.weather_code);
+    const desc=wmoDesc(cur.weather_code);
+    const rain0=d.daily?.precipitation_probability_max?.[0]||0;
+    let outfit='';
+    if(t>=30)outfit='短袖＋防曬乳＋帽子';
+    else if(t>=25)outfit='短袖，備薄外套（室內冷氣強）';
+    else if(t>=20)outfit='長袖或薄外套';
+    else if(t>=15)outfit='外套，建議疊穿';
+    else outfit='厚外套＋保暖衣物';
+    if(rain0>40)outfit+='・帶傘';
+    document.getElementById('wW').innerHTML=`<div style="font-size:30px;font-weight:300;color:var(--nv);line-height:1;font-family:'Inter',sans-serif">${t}° ${em}</div><div style="font-size:11px;color:var(--t2);margin-top:7px">${desc} · 濕度 ${hm}%</div><div class="ww-outfit">👗 ${outfit}<br><span style="font-size:10px;color:var(--t3)">小孩多備一套換洗衣物</span></div>`;
     if(mode==='full'){
-      const fc=d.weather.slice(0,3).map(w=>{
-        const em2=WM[parseInt(w.hourly[4]?.weatherCode||113)]||'🌡️';
-        return `<div class="wf"><div class="wf-d">${w.date.slice(5)}</div><div class="wf-e">${em2}</div><div class="wf-r">${w.mintempC}°–${w.maxtempC}°</div></div>`;
+      const DOW=['日','一','二','三','四','五','六'];
+      const fc=d.daily.time.map((date,i)=>{
+        const label=i===0?'今天':i===1?'明天':DOW[new Date(date+'T00:00:00').getDay()];
+        const em2=wmoEmoji(d.daily.weather_code[i]);
+        const hi=Math.round(d.daily.temperature_2m_max[i]);
+        const lo=Math.round(d.daily.temperature_2m_min[i]);
+        const rain=d.daily.precipitation_probability_max[i]||0;
+        return `<div class="wf"><div class="wf-d">${label}</div><div class="wf-e">${em2}</div><div class="wf-r">${hi}°/${lo}°</div>${rain>20?`<div class="wf-rn">💧${rain}%</div>`:''}</div>`;
       }).join('');
       document.getElementById('weaCard').innerHTML=`
         <div class="wc-ci">🇰🇷 釜山・即時天氣</div>
@@ -1690,15 +1731,47 @@ async function fetchW(mode='widget'){
         <div class="wc-dt">
           <div><div class="wd-v">${fl}°</div><div class="wd-l">體感</div></div>
           <div><div class="wd-v">${hm}%</div><div class="wd-l">濕度</div></div>
-          <div><div class="wd-v">${wk}km</div><div class="wd-l">風速</div></div>
+          <div><div class="wd-v">${wk}km/h</div><div class="wd-l">風速</div></div>
         </div>
         <div class="wc-fc">${fc}</div>`;
     }
   }catch(e){document.getElementById('wW').innerHTML='<div style="font-size:11px;color:var(--t3)">無法取得天氣</div>';}
 }
 
+// ═══ TODAY CARD ══════════════════════════
+function renTodayCard(){
+  const now=new Date();
+  const tripStart=new Date('2026-09-16');
+  const tripEnd=new Date('2026-09-21T23:59:59');
+  const titleEl=document.getElementById('tdTitle');
+  const subEl=document.getElementById('tdSub');
+  const listEl=document.getElementById('tdList');
+  if(now<tripStart){
+    const diff=Math.ceil((tripStart-now)/(1000*60*60*24));
+    titleEl.textContent='出發前';
+    subEl.textContent='行程倒數 '+diff+' 天';
+    listEl.innerHTML='<div class="td-empty">✈️ 旅程即將開始，行程規劃中</div>';
+    return;
+  }
+  if(now>tripEnd){
+    titleEl.textContent='旅程結束';
+    subEl.textContent='感謝這趟美好的釜山之旅 🇰🇷';
+    listEl.innerHTML='<div class="td-empty">📸 旅程圓滿結束，留下美好回憶</div>';
+    return;
+  }
+  const dayIdx=Math.floor((now-tripStart)/(1000*60*60*24));
+  const day=ITIN[dayIdx];
+  if(!day){listEl.innerHTML='<div class="td-empty">今日無行程資料</div>';return;}
+  titleEl.textContent='第 '+day.day+' 天 · '+day.title;
+  subEl.textContent=day.date+'（'+day.dow+'）· '+day.hotel;
+  const shown=day.acts.slice(0,4);
+  const more=day.acts.length-4;
+  listEl.innerHTML=shown.map(a=>`<div class="td-act"><div class="td-t">${a.t||'—'}</div><div class="td-n">${a.n}</div></div>`).join('')+
+    (more>0?`<div style="font-size:11px;color:var(--t3);text-align:center;padding:6px 0">還有 ${more} 個活動，點「完整行程」查看</div>`:'');
+}
+
 // ═══ INIT ════════════════════════════════
-initCD();initItin();initExpUI();renHE();renCashCard();renE();renCL();renD();fetchRate(false);fetchW('widget');
+initCD();initItin();initExpUI();renHE();renCashCard();renE();renCL();renD();fetchRate(false);fetchW('widget');renTodayCard();
 document.addEventListener('touchend',e=>{const n=Date.now();if(n-(document._lt||0)<300)e.preventDefault();document._lt=n;},{passive:false});
 </script>
 </body>
