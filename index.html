@@ -508,46 +508,6 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
 
   <!-- ── 自家帳務 ── -->
   <div id="et0">
-    <!-- 總計列 -->
-    <div class="sum-row">
-      <div class="sb"><div class="sb-l">韓幣</div><div class="sb-v" id="hKrw">₩0</div></div>
-      <div class="sb"><div class="sb-l">台幣</div><div class="sb-v" id="hTwd" style="font-size:13px">NT$0</div></div>
-      <div class="sb"><div class="sb-l">筆數</div><div class="sb-v" id="hCnt">0</div></div>
-    </div>
-
-    <!-- 現金管理卡 -->
-    <div class="cash-card">
-      <div class="cc-top">
-        <div class="cc-ti">💵 現金管理</div>
-        <button class="cc-set" id="cashAddBtn" onclick="toggleCashForm()">＋ 新增現金</button>
-      </div>
-      <!-- 新增現金表單 -->
-      <div id="cashFormArea" style="display:none;margin-bottom:12px;padding:12px;background:var(--bg);border-radius:12px">
-        <div class="fc2" style="margin-bottom:8px">
-          <div class="fg" style="margin-bottom:0"><label class="fl">金額（₩）</label><input class="fi" id="cashInAmt" type="number" inputmode="numeric" placeholder="例：300000"></div>
-          <div class="fg" style="margin-bottom:0"><label class="fl">日期</label><input class="fi" id="cashInDate" type="date" value="2026-09-16"></div>
-        </div>
-        <div class="fg" style="margin-bottom:8px"><label class="fl">備註</label><input class="fi" id="cashInNote" placeholder="例：台灣換匯、銀行ATM、明洞換匯所"></div>
-        <button class="btn btn-uk btn-f" onclick="addCashIn()">新增</button>
-      </div>
-      <!-- 統計 -->
-      <div class="cc-grid" style="margin-bottom:10px">
-        <div class="cc-item">
-          <div class="cc-lbl">現金收入</div>
-          <div class="cc-val" id="cashIn">₩0</div>
-        </div>
-        <div class="cc-item">
-          <div class="cc-lbl">已花費</div>
-          <div class="cc-val" id="cashSpent">₩0</div>
-        </div>
-        <div class="cc-item">
-          <div class="cc-lbl">剩餘現金</div>
-          <div class="cc-val ok" id="cashLeft">₩0</div>
-        </div>
-      </div>
-      <!-- 現金收入記錄 -->
-      <div id="cashInList"></div>
-    </div>
 
     <!-- 新增支出表單 -->
     <div class="card">
@@ -580,7 +540,39 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
       </div>
       <button class="btn btn-uk btn-f" style="margin-top:12px" onclick="addHE()">新增支出</button>
     </div>
-    <div class="card"><div id="hList"><div class="empty"><div class="e-ic">💸</div><div class="e-tx">尚未新增支出</div></div></div></div>
+
+    <!-- 支出清單 + 總計 -->
+    <div class="card">
+      <div class="sum-row" style="margin:-4px -4px 12px">
+        <div class="sb"><div class="sb-l">韓幣</div><div class="sb-v" id="hKrw">₩0</div></div>
+        <div class="sb"><div class="sb-l">台幣</div><div class="sb-v" id="hTwd" style="font-size:13px">NT$0</div></div>
+        <div class="sb"><div class="sb-l">筆數</div><div class="sb-v" id="hCnt">0</div></div>
+      </div>
+      <div id="hList"><div class="empty"><div class="e-ic">💸</div><div class="e-tx">尚未新增支出</div></div></div>
+    </div>
+
+    <!-- 現金管理卡 -->
+    <div class="cash-card">
+      <div class="cc-top">
+        <div class="cc-ti">💵 現金管理</div>
+        <button class="cc-set" id="cashAddBtn" onclick="toggleCashForm()">＋ 新增現金</button>
+      </div>
+      <div id="cashFormArea" style="display:none;margin-bottom:12px;padding:12px;background:var(--bg);border-radius:12px">
+        <div class="fc2" style="margin-bottom:8px">
+          <div class="fg" style="margin-bottom:0"><label class="fl">金額（₩）</label><input class="fi" id="cashInAmt" type="number" inputmode="numeric" placeholder="例：300000"></div>
+          <div class="fg" style="margin-bottom:0"><label class="fl">日期</label><input class="fi" id="cashInDate" type="date" value="2026-09-16"></div>
+        </div>
+        <div class="fg" style="margin-bottom:8px"><label class="fl">備註</label><input class="fi" id="cashInNote" placeholder="例：台灣換匯、銀行ATM、明洞換匯所"></div>
+        <button class="btn btn-uk btn-f" onclick="addCashIn()">新增</button>
+      </div>
+      <div class="cc-grid" style="margin-bottom:10px">
+        <div class="cc-item"><div class="cc-lbl">現金收入</div><div class="cc-val" id="cashIn">₩0</div></div>
+        <div class="cc-item"><div class="cc-lbl">已花費</div><div class="cc-val" id="cashSpent">₩0</div></div>
+        <div class="cc-item"><div class="cc-lbl">剩餘現金</div><div class="cc-val ok" id="cashLeft">₩0</div></div>
+      </div>
+      <div id="cashInList"></div>
+    </div>
+
   </div>
 
   <!-- ── 跨家分攤 ── -->
