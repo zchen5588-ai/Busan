@@ -1828,9 +1828,16 @@ function closeM(e){if(e&&e.target!==document.getElementById('docModal'))return;d
 
 // ═══ GUIDE RESOURCES ══════════════════════
 const GR_DEFAULT=[
-  {name:'天空膠囊訂票攻略',url:'https://drive.google.com/file/d/1gTU7Pphc0fJZ-7UIYYWI6t6Qjzj0W1zV/view?usp=sharing',type:'img',thumb:'https://drive.google.com/thumbnail?id=1gTU7Pphc0fJZ-7UIYYWI6t6Qjzj0W1zV&sz=w400'}
+  {name:'天空膠囊訂票攻略',url:'https://drive.google.com/file/d/1gTU7Pphc0fJZ-7UIYYWI6t6Qjzj0W1zV/view?usp=sharing',type:'img',thumb:'https://drive.google.com/thumbnail?id=1gTU7Pphc0fJZ-7UIYYWI6t6Qjzj0W1zV&sz=w400'},
+  {name:'釜山 PASS 資訊',url:'https://drive.google.com/file/d/11HLyb-SyEoIDorfd7FgChtlt8FVRPIsD/view?usp=drive_link',type:'img',thumb:'https://drive.google.com/thumbnail?id=11HLyb-SyEoIDorfd7FgChtlt8FVRPIsD&sz=w400'},
 ];
-const gGR=()=>{const d=localStorage.getItem('gr');return d?JSON.parse(d):JSON.parse(JSON.stringify(GR_DEFAULT));};
+const gGR=()=>{
+  const d=localStorage.getItem('gr');
+  if(!d)return JSON.parse(JSON.stringify(GR_DEFAULT));
+  const stored=JSON.parse(d);
+  GR_DEFAULT.forEach(def=>{if(!stored.find(s=>s.url===def.url))stored.push(def);});
+  return stored;
+};
 const sGR=d=>localStorage.setItem('gr',JSON.stringify(d));
 let _grEdit=null;
 function gDriveThumb(url){const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);return m?`https://drive.google.com/thumbnail?id=${m[1]}&sz=w400`:null;}
