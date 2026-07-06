@@ -65,7 +65,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
 .cd-l{font-size:9px;color:rgba(42,24,16,.55);margin-top:1px;letter-spacing:.5px;text-transform:uppercase}
 
 /* ── MAIN ── */
-.main{margin-top:var(--hdr-h);margin-bottom:var(--nav-h);min-height:calc(100vh - var(--hdr-h) - var(--nav-h))}
+.main{margin-top:var(--hdr-h);margin-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));min-height:calc(100vh - var(--hdr-h) - var(--nav-h))}
 .sec{display:none;padding:14px 14px 8px;animation:fu .25s ease}
 .sec.active{display:block}
 @keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -144,7 +144,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--bg);color:va
 .dt-btn-l{display:block;font-size:9.5px;margin-top:2px;color:var(--t3)}
 .dt-btn.active .dt-btn-d,.dt-btn.active .dt-btn-l{color:var(--nv)}
 /* Day panel */
-.day-panel{display:none;padding:12px 14px 8px;animation:fu .25s ease}
+.day-panel{display:none;padding:12px 14px 32px;animation:fu .25s ease}
 .day-panel.active{display:block}
 .dp-head{background:var(--uk);border-radius:16px;padding:15px 17px;margin-bottom:10px}
 .dp-tag{font-size:9px;font-weight:700;color:rgba(28,43,74,.55);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:5px}
@@ -1258,9 +1258,9 @@ function initCD(){
 
 // ═══ ITINERARY ════════════════════════════
 function makeRouteUrl(day){
-  const stops=day.acts.filter(a=>a.q);
+  const stops=day.acts.filter(a=>a.q&&!a.tr&&!a.walk);
   if(stops.length<2)return null;
-  return `https://map.naver.com/p/search/${encodeURIComponent(stops[0].q)}`;
+  return 'https://www.google.com/maps/dir/'+stops.slice(0,6).map(a=>encodeURIComponent(a.q)).join('/');
 }
 function showDay(i){
   document.querySelectorAll('.dt-btn').forEach((el,j)=>el.classList.toggle('active',i===j));
@@ -1275,7 +1275,7 @@ function initItin(){
     </button>`).join('');
   document.getElementById('itin-container').innerHTML=ITIN.map((day,i)=>{
     const routeUrl=makeRouteUrl(day);
-    const stopNames=day.acts.filter(a=>a.q).map(a=>a.n).slice(0,4).join(' → ');
+    const stopNames=day.acts.filter(a=>a.q&&!a.tr&&!a.walk).map(a=>a.n).slice(0,4).join(' → ');
     return `
     <div class="day-panel ${i===0?'active':''}" id="dp${day.day}">
       <div class="dp-head">
@@ -1286,7 +1286,7 @@ function initItin(){
       ${routeUrl?`<a class="route-btn" href="${routeUrl}" target="_blank">
         <span class="rb-icon">🗺️</span>
         <div class="rb-body">
-          <div class="rb-title">今日路線地圖（Naver Map）</div>
+          <div class="rb-title">今日路線地圖（Google Maps）</div>
           <div class="rb-sub">${stopNames}</div>
         </div>
         <span class="rb-arrow">↗</span>
