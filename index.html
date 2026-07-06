@@ -1077,7 +1077,7 @@ const ITIN=[
     {t:'12:00',n:'午餐：秀英돼지국밥（西面）',d:'西面在地豬肉湯飯・濃郁湯底・與下午購物同區不需移動',q:'서면 수영 돼지국밥',badge:'🍲 湯飯',badgeType:'food',
      flex_opts:['水邊最高（수변최고돼지국밥）・濃郁豬骨湯底・LCT附近・泡完可直接步行前往・但之後需再搭計程車往西面','秀英돼지국밥（西面）・已在西面直接用餐・午餐後步行去逛街，節省一段移動（本行程採此）']},
     {t:'14:00',n:'西面逛街',d:'西面地下街・Olive Young・平價美妝服飾・韓國潮流聚集地',q:'서면',kids:['西面地下街','Olive Young']},
-    {t:'19:00',n:'晚餐：雪夜覓烤肉',d:'西面人氣烤肉店・建議提前訂位・12人需確認是否接受大團體',q:'설야멱 서면',badge:'🥩 烤肉',badgeType:'food',kids:['建議訂位']},
+    {t:'18:00',n:'晚餐：雪夜覓烤肉',d:'西面人氣烤肉店・✅ 已訂位 18:00・分兩筆訂單・請出示訂位確認',q:'설야멱 서면',badge:'🥩 烤肉',badgeType:'food',kids:['✅ 已訂位 18:00']},
   ]},
   {day:4,date:'09/19',dow:'六',title:'換住南浦洞・影島・札嘎其',hotel:'Hotel Ground27 Check-in',
    note:'今日路線：NewCZ 退房 → Hotel Ground27 → 李在魔披薩 → 白淺灘 → Arte Museum → 札嘎其晚餐<br>🔴 廣安里無人機秀已取消，今天行程較輕鬆',
@@ -1208,9 +1208,16 @@ const DOCS_DEFAULT=[
   {id:'d4',icon:'🏨',name:'Hotel Ground27 訂房確認',desc:'9/19–9/21，2晚・Jung-gu 中區'},
   {id:'d5',icon:'🛡️',name:'旅遊平安險保單',desc:'全家旅平險'},
   {id:'d6',icon:'🎫',name:'水族館門票',desc:'SEA LIFE Busan 線上票'},
+  {id:'d_sy1',icon:'🥩',name:'雪夜覓訂位・訂單一',desc:'9/18（五）18:00・西面・雪夜覓烤肉',link:'https://drive.google.com/file/d/1AEEqbpmdkz3WUM4juaT4-JH0GBrYE1oJ/view?usp=drive_link'},
+  {id:'d_sy2',icon:'🥩',name:'雪夜覓訂位・訂單二',desc:'9/18（五）18:00・西面・雪夜覓烤肉',link:'https://drive.google.com/file/d/1BYeGyLo0Ckp-9M6VwEnHyKiUzeoL65Sp/view?usp=drive_link'},
   {id:'d7',icon:'📄',name:'其他重要文件',desc:'其他相關電子文件'},
 ];
-const getDocs=()=>{const d=localStorage.getItem('doc_items');return d?JSON.parse(d):JSON.parse(JSON.stringify(DOCS_DEFAULT));};
+const getDocs=()=>{
+  const d=localStorage.getItem('doc_items');
+  if(!d)return JSON.parse(JSON.stringify(DOCS_DEFAULT));
+  const stored=JSON.parse(d),ids=new Set(stored.map(x=>x.id));
+  return [...stored,...DOCS_DEFAULT.filter(x=>!ids.has(x.id))];
+};
 const saveDocs=d=>localStorage.setItem('doc_items',JSON.stringify(d));
 
 const CN=['餐飲','交通','住宿','購物','景點','其他'];
@@ -2029,7 +2036,7 @@ function toggleDocEdit(){
 function renD(){
   const lnks=gDL(),docs=getDocs();
   document.getElementById('doc-container').innerHTML=docs.map(doc=>{
-    const lnk=lnks[doc.id]||'';
+    const lnk=lnks[doc.id]||doc.link||'';
     return `<div class="doc-card">
       <div class="doc-ic">${doc.icon||'📄'}</div>
       <div class="doc-in">
